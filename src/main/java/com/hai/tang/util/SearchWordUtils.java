@@ -4,6 +4,9 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+/**
+ * 用于多文件中搜索
+ */
 public class SearchWordUtils {
 
     //当在文件夹中搜索时，遇到以下非文本文件则跳过

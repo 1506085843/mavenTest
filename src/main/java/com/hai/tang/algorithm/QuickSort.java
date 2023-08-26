@@ -1,5 +1,8 @@
 package com.hai.tang.algorithm;
 
+/**
+ * 快速排序
+ */
 public class QuickSort {
 
     public static void sort(int[] arr) {

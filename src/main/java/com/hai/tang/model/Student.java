@@ -5,6 +5,9 @@ public class Student {
 
     public String name;
     public int id;
+    public int score;
+
+    public Student() {}
 
     public Student(String name, int id) {
         this.name = name;
@@ -29,5 +32,13 @@ public class Student {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

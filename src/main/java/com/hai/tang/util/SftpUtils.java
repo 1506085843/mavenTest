@@ -8,6 +8,9 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
+/**
+ * 用于连接远程服务器
+ */
 public class SftpUtils {
     private static JSch jsch;
     private static Session session = null;
