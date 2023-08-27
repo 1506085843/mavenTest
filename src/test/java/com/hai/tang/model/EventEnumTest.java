@@ -1,6 +1,5 @@
-package com.hai.tang.modeltest;
+package com.hai.tang.model;
 
-import com.hai.tang.model.EventEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

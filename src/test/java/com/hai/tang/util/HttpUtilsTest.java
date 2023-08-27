@@ -1,8 +1,7 @@
-package com.hai.tang.utiltest;
+package com.hai.tang.util;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.TypeReference;
-import com.hai.tang.util.HttpUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.multipart.MultipartFile;

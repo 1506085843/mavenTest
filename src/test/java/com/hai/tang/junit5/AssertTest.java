@@ -1,4 +1,4 @@
-package com.hai.tang.junit5test;
+package com.hai.tang.junit5;
 
 
 import com.hai.tang.model.Student;

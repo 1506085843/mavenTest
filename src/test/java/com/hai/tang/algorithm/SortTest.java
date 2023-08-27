@@ -1,6 +1,5 @@
-package com.hai.tang.algorithmtest;
+package com.hai.tang.algorithm;
 
-import com.hai.tang.algorithm.QuickSort;
 import com.hai.tang.model.Student;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

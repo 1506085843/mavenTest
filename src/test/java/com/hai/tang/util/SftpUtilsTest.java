@@ -1,6 +1,5 @@
-package com.hai.tang.utiltest;
+package com.hai.tang.util;
 
-import com.hai.tang.util.SftpUtils;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
