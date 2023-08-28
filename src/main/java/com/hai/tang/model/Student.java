@@ -7,11 +7,18 @@ public class Student {
     public int id;
     public int score;
 
-    public Student() {}
+    public Student() {
+    }
 
     public Student(String name, int id) {
         this.name = name;
         this.id = id;
+    }
+
+    public Student(int id, String name, int score) {
+        this.name = name;
+        this.id = id;
+        this.score = score;
     }
 
     public void setName(String name) {
