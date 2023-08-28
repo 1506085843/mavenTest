@@ -49,7 +49,7 @@ public class StreamTest {
     @Test
     @DisplayName("String[]中的元素转大写并转为List<String>")
     public void arrayStrToList() {
-        String[] strArray= { "java", "react", "angular", "vue" };
+        String[] strArray = {"java", "react", "angular", "vue"};
         List<String> list = Stream.of(strArray).map(String::toUpperCase).collect(Collectors.toList());
         System.out.println(list);
     }
@@ -92,7 +92,7 @@ public class StreamTest {
     @Test
     @DisplayName("int [] 转 List<Integer>")
     public void arrayIntToListInteger() {
-        int[] intArry = new int[]{5,6,1,4,9};
+        int[] intArry = new int[]{5, 6, 1, 4, 9};
         List<Integer> integerList = Arrays.stream(intArry).boxed().collect(Collectors.toList());
         System.out.println(integerList);
     }
@@ -108,7 +108,7 @@ public class StreamTest {
     @Test
     @DisplayName("int [] 最大、最小值、平均值，求和")
     public void arrayIntStatistics() {
-        int[] arr = new int[]{12,3,34,67,100,99};
+        int[] arr = new int[]{12, 3, 34, 67, 100, 99};
         int maxValue = Arrays.stream(arr).max().getAsInt();
         int minValue = Arrays.stream(arr).min().getAsInt();
         double averValue = Arrays.stream(arr).average().getAsDouble();
@@ -154,7 +154,7 @@ public class StreamTest {
     @Test
     @DisplayName("List<String> 逗号拼接为一个字符串")
     public void listStrToStr() {
-        List<String> strList = new ArrayList<>(Arrays.asList("a","b","c"));
+        List<String> strList = new ArrayList<>(Arrays.asList("a", "b", "c"));
         String str = strList.stream().collect(Collectors.joining(","));
         // 或者使用 String.join
         // String str = String.join(",", strList);
@@ -174,7 +174,7 @@ public class StreamTest {
     public void generateArrayOrList() {
         //生成生成[0,100)的 数组或 List，包括 0， 不包括 100
         int[] intArray = IntStream.range(0, 100).toArray();
-        List<Integer> intList= IntStream.range(0, 100)
+        List<Integer> intList = IntStream.range(0, 100)
                 .boxed()
                 .collect(Collectors.toList());
         List<String> strList = IntStream.range(0, 100)
@@ -187,7 +187,7 @@ public class StreamTest {
 
         //生成[0,100]的 数组或 List
         int[] intArray1 = IntStream.rangeClosed(0, 100).toArray();
-        List<Integer> intList1= IntStream.rangeClosed(0, 100)
+        List<Integer> intList1 = IntStream.rangeClosed(0, 100)
                 .boxed()
                 .collect(Collectors.toList());
         List<String> strList1 = IntStream.rangeClosed(0, 100)
@@ -203,13 +203,13 @@ public class StreamTest {
     @DisplayName("判断数组中是否含有某一值")
     public void arrayIsContain() {
         //字符串数组
-        String[] strArray = {"AB","BC","CD","AE"};
+        String[] strArray = {"AB", "BC", "CD", "AE"};
         boolean contains1 = Arrays.stream(strArray).anyMatch("AE"::equals);
         //或者
         //boolean contains1 = Arrays.asList(strArray).contains("AE");
         System.out.println(contains1);
 
-        int[] intArray = {1,2,3,4};
+        int[] intArray = {1, 2, 3, 4};
         boolean contains2 = IntStream.of(intArray).anyMatch(x -> x == 4);
         System.out.println(contains2);
     }
@@ -234,13 +234,13 @@ public class StreamTest {
         //String类型数组合并
         String[] a = {"a", "b", "c"};
         String[] b = {"1", "2", "3"};
-        String[] c = Stream.of(a,b).flatMap(Stream::of).toArray(String[]::new);
+        String[] c = Stream.of(a, b).flatMap(Stream::of).toArray(String[]::new);
         System.out.println(Arrays.toString(c));
 
         //int类型数组合并
-        int[] a1 = new int[]{1,3};
-        int[] b1 = new int[]{2,4};
-        int[] c1 =  IntStream.concat(Arrays.stream(a1), Arrays.stream(b1)).toArray();
+        int[] a1 = new int[]{1, 3};
+        int[] b1 = new int[]{2, 4};
+        int[] c1 = IntStream.concat(Arrays.stream(a1), Arrays.stream(b1)).toArray();
         System.out.println(Arrays.toString(c1));
     }
 
@@ -273,7 +273,7 @@ public class StreamTest {
     @DisplayName("List<Integer>求交集、并集、差集")
     public void listHandle() {
         List<Integer> list = new ArrayList<>(Arrays.asList(7, 8, 9));
-        List<Integer> list2 = new ArrayList<>(Arrays.asList(3,4, 9));
+        List<Integer> list2 = new ArrayList<>(Arrays.asList(3, 4, 9));
         //交集
         List<Integer> beMixed = list.stream().filter(list2::contains).collect(Collectors.toList());
         System.out.println(beMixed);//[9]
@@ -283,7 +283,7 @@ public class StreamTest {
         System.out.println(aggregate);//[7, 8, 9, 3, 4]
 
         //差集
-        List<Integer> subtraction = list.stream().filter(v->!list2.contains(v)).collect(Collectors.toList());
+        List<Integer> subtraction = list.stream().filter(v -> !list2.contains(v)).collect(Collectors.toList());
         System.out.println(subtraction);//[7, 8]
     }
 
@@ -299,7 +299,7 @@ public class StreamTest {
     @Test
     @DisplayName("List<String>中获取第一个首字母是j的元素")
     public void listFirstCountStartChat() {
-        List<String> list = Arrays.asList( "react","java", "angular", "javascript", "vue");
+        List<String> list = Arrays.asList("react", "java", "angular", "javascript", "vue");
         String firstJ = list.stream().filter(p -> p.startsWith("j")).findFirst().get();
         System.out.println(firstJ);
     }
@@ -337,25 +337,25 @@ public class StreamTest {
 
 
     @SafeVarargs
-    public static  List<String> join(List<String>... lists) {
+    public static List<String> join(List<String>... lists) {
         return Arrays.stream(lists).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     @Test
     @DisplayName("多个List<String> 合并为一个List<String>")
     public void manyListToList() {
-            List<String> list1=new ArrayList<>(Arrays.asList("a","b","c"));
-            List<String> list2=new ArrayList<>(Arrays.asList("d","e","f"));
-            List<String> list3=new ArrayList<>(Arrays.asList("g","h","i"));
-            List<String> list4=new ArrayList<>(Arrays.asList("1","2"));
-            List<String> list5=new ArrayList<>(Arrays.asList("3","4","5"));
+        List<String> list1 = new ArrayList<>(Arrays.asList("a", "b", "c"));
+        List<String> list2 = new ArrayList<>(Arrays.asList("d", "e", "f"));
+        List<String> list3 = new ArrayList<>(Arrays.asList("g", "h", "i"));
+        List<String> list4 = new ArrayList<>(Arrays.asList("1", "2"));
+        List<String> list5 = new ArrayList<>(Arrays.asList("3", "4", "5"));
 
-            List<String> result1 = join(list1, list2,list3);
-            List<String> result2 = join(list4, list5);
-            //[a, b, c, d, e, f, g, h, i]
-            System.out.println(Arrays.toString(result1.toArray()));
-            //[1, 2, 3, 4, 5]
-            System.out.println(Arrays.toString(result2.toArray()));
+        List<String> result1 = join(list1, list2, list3);
+        List<String> result2 = join(list4, list5);
+        //[a, b, c, d, e, f, g, h, i]
+        System.out.println(Arrays.toString(result1.toArray()));
+        //[1, 2, 3, 4, 5]
+        System.out.println(Arrays.toString(result2.toArray()));
     }
 
     @Test
