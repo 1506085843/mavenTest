@@ -3,6 +3,8 @@ package com.hai.tang.commonoperat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 @DisplayName("字符串测试类")
 public class StringTest {
 
@@ -33,6 +35,28 @@ public class StringTest {
         int lastPostion = str.lastIndexOf("}"); // 将返回11,不存在则返回-1
         System.out.println(lastPostion);
     }
+
+    @Test
+    @DisplayName("替换字符串某一下标处的字符")
+    public void replaceChar() {
+        String str = "abeecsabxt";
+        StringBuilder strBuild = new StringBuilder(str);
+        strBuild.setCharAt(1, '$');
+        String  result = String.valueOf(strBuild);
+        System.out.println(result); //a$eecsabxt
+    }
+
+    @Test
+    @DisplayName("在字符串指定位置之前插入字符(串)")
+    public void insertStr() {
+        String str = "abeecsabxt";
+        StringBuilder strBuild = new StringBuilder(str);
+        strBuild.insert(1, "qq"); //插入字符串
+        //strBuild.insert(1, 'q'); //插入字符
+        String  result = String.valueOf(strBuild);
+        System.out.println(result);//输出：aqqbeecsabxt
+    }
+
 
     @Test
     @DisplayName("从字符串的指定位置截取后面字符串")
@@ -74,6 +98,26 @@ public class StringTest {
     }
 
     @Test
+    @DisplayName("判断字符串是不是数字")
+    public void stringIsNumber() {
+        String str = "-100.864564009";
+        if (str.matches("-?\\d+(\\.\\d+)?")) {
+            System.out.println("是数字");
+        } else {
+            System.out.println("不是数字");
+        }
+
+        //或者
+        /*try {
+            String str = "-100.864564009";
+            double num = Double.parseDouble(str);
+            System.out.println("是数字");
+        } catch (NumberFormatException e) {
+            System.out.println("不是数字");
+        }*/
+    }
+
+    @Test
     @DisplayName("判断字符是不是一个数字")
     public void charIsNumber() {
         char ch = '3';
@@ -91,4 +135,93 @@ public class StringTest {
         System.out.println(str);//输出abc${123456}ab}c
     }
 
+
+    @Test
+    @DisplayName("字符串中分割")
+    public void stringSplit() {
+        String str = "abc def   gh.ij   k/l   m//$\\s";
+
+        //通过空格来分割
+        String[] split = str.split("\\s+");
+        System.out.println(Arrays.toString(split));//[abc, def, gh.ij, k/l, m//$\s]
+        //通过 . 来分割
+        String[] split1 = str.split("\\.");
+        System.out.println(Arrays.toString(split1));//[abc def   gh, ij   k/l   m//$\s]
+        //通过 $ 来分割
+        String[] split2 = str.split("\\$");
+        System.out.println(Arrays.toString(split2));//[abc def   gh.ij   k/l   m//, \s]
+        //通过 \ 来分割
+        String[] split3 = str.split("\\\\");
+        System.out.println(Arrays.toString(split3));//[abc def   gh.ij   k/l   m//$, s]
+    }
+
+    @Test
+    @DisplayName("字符串中替换特殊字符")
+    public void stringReplace() {
+        String str = "abc def   gh.ij   k/l   m//$\\siug\\\\h";
+
+        //替换空格为 1
+        String str1 = str.replaceAll("\\s+","1");
+        System.out.println(str1);   //abc1def1gh.ij1k/l1m//$\siug\\h
+        //替换 . 为 2
+        String str2 = str.replaceAll("\\.","2");
+        System.out .println(str2);  //abc def   gh2ij   k/l   m//$\siug\\h
+        //替换 $ 为3
+        String str3 = str.replaceAll("\\$","3");
+        System.out.println(str3);   //abc def   gh.ij   k/l   m//3\siug\\h
+        //替换 \ 为 4
+        String str4 = str.replaceAll("\\\\","4");
+        System.out.println(str4);   //abc def   gh.ij   k/l   m//$4siug44h
+        //替换 \\ 为 5
+        String str5 = str.replaceAll("\\\\\\\\","5");
+        System.out.println(str5);   //abc def   gh.ij   k/l   m//$\siug5h
+    }
+
+    @Test
+    @DisplayName("字符串中替换第一次遇到的特殊字符")
+    public void stringReplaceFirst() {
+        String str = "abc  def   gh.ij   k/l   m//$\\siug\\\\h";
+
+        //将遇到的第一个多空格替换为 1
+        String str1 = str.replaceFirst("\\s+","1");
+        System.out.println(str1);   //abc1def   gh.ij   k/l   m//$\siug\\h
+        //将遇到的第一个 . 替换为 2
+        String str2 = str.replaceFirst("\\.","2");
+        System.out .println(str2);  //abc  def   gh2ij   k/l   m//$\siug\\h
+        //将遇到的第一个 $ 替换为3
+        String str3 = str.replaceFirst("\\$","3");
+        System.out.println(str3);   //abc  def   gh.ij   k/l   m//3\siug\\h
+        //将遇到的第一个 \ 替换为 4
+        String str4 = str.replaceFirst("\\\\","4");
+        System.out.println(str4);   //abc  def   gh.ij   k/l   m//$4siug\\h
+        //将遇到的第一个 \\ 替换为 5
+        String str5 = str.replaceFirst("\\\\\\\\","5");
+        System.out.println(str5);   //abc  def   gh.ij   k/l   m//$\siug5h
+    }
+
+    @Test
+    @DisplayName("对字符串特殊字符转义")
+    public void stringEscape() {
+        String str = "ab$c  dk`jge`f   g</script>h.ij   k/l   m//$\\siug\\\\h";
+
+        //反斜杠对其转义为\\
+        String str1 = str.replace("\\", "\\\\");
+        // 或者 String str1 = str.replaceAll("\\\\", "\\\\\\\\");
+        System.out.println(str1);   //abc  dk`jge`f   g</script>h.ij   k/l   m//$\\siug\\\\h
+
+        //</script>将其转义为<\/script>
+        String str2 = str.replace("</script>", "<\\/script>");
+        //或者 String str2 = str.replaceAll("</script>", "<\\\\/script>");
+        System.out.println(str2);   //abc  dk`jge`f   g<\/script>h.ij   k/l   m//$\siug\\h
+
+        //字符串模板的反引号`对其转义为\`
+        String str3 = str.replace("`", "\\`");
+        //或者 String str3 = str.replaceAll("`", "\\\\`");
+        System.out.println(str3);  //abc  dk\`jge\`f   g</script>h.ij   k/l   m//$\siug\\h
+
+        //$符号对其转义为\$
+        String str4 = str. replace("$", "\\$");
+        // 或者 String str4 = str.replaceAll("\\$", "\\\\\\$");
+        System.out.println(str4);   //abc  dk`jge`f   g</script>h.ij   k/l   m//\$\siug\\h
+    }
 }
