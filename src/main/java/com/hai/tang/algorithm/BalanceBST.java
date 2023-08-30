@@ -1,15 +1,14 @@
 package com.hai.tang.algorithm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 自平衡二叉搜索树
  * 即：
  * 任何节点的左子树和右子树的差不超过一
  * 左右子树都是平衡的
  */
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class BalanceBST {
 
 
