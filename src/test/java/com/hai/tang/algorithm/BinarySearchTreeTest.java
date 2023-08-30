@@ -32,6 +32,8 @@ public class BinarySearchTreeTest {
         System.out.println(binaryTree.midTraverse());
         //后序遍历
         System.out.println(binaryTree.afterTraverse());
+        //层序遍历
+        System.out.println(binaryTree.levelsTraverse());
         //清空二叉搜索树
         binaryTree.clear();
     }

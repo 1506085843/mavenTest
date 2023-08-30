@@ -38,6 +38,8 @@ public class BinaryTreeTest {
         System.out.println(binaryTree.midTraverse());
         //后序遍历
         System.out.println(binaryTree.afterTraverse());
+        //层序遍历
+        System.out.println(binaryTree.levelsTraverse());
         //清空二叉树
         binaryTree.clear();
     }

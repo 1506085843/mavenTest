@@ -133,5 +133,27 @@ public class BinaryTree<T> {
         root = null;
     }
 
+    /**
+     * 层序遍历
+     */
+    public List<T> levelsTraverse() {
+        return levelsTraverse(new ArrayList<>(), root);
+    }
+
+    private List<T> levelsTraverse(List<T> list, Node root) {
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(root);
+        while (list.size() != size) {
+            Node node = queue.poll();
+            list.add(node.value);
+            if (node.leftNode != null) {
+                queue.offer(node.leftNode);
+            }
+            if (node.rightNode != null) {
+                queue.offer(node.rightNode);
+            }
+        }
+        return list;
+    }
 }
 

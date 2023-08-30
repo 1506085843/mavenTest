@@ -2,7 +2,9 @@ package com.hai.tang.algorithm;
 
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * 二叉搜索树
@@ -124,6 +126,29 @@ public class BinarySearchTree {
             //遍历右节点
             afterTraverse(list, node.rightNode);
             list.add(node.value);
+        }
+        return list;
+    }
+
+    /**
+     * 层序遍历
+     */
+    public List<Integer> levelsTraverse() {
+        return levelsTraverse(new ArrayList<>(), root);
+    }
+
+    private List<Integer> levelsTraverse(List<Integer> list, Node root) {
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(root);
+        while (list.size() != size) {
+            Node node = queue.poll();
+            list.add(node.value);
+            if (node.leftNode != null) {
+                queue.offer(node.leftNode);
+            }
+            if (node.rightNode != null) {
+                queue.offer(node.rightNode);
+            }
         }
         return list;
     }

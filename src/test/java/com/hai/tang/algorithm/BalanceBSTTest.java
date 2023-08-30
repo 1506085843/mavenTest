@@ -34,5 +34,7 @@ public class BalanceBSTTest {
         System.out.println(binaryTree.midTraverse());
         //后序遍历
         System.out.println(binaryTree.afterTraverse());
+        //层序遍历
+        System.out.println(binaryTree.levelsTraverse());
     }
 }
