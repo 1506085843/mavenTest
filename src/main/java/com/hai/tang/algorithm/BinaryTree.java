@@ -125,6 +125,29 @@ public class BinaryTree<T> {
     }
 
     /**
+     * 层序遍历
+     */
+    public List<T> levelsTraverse() {
+        return levelsTraverse(new ArrayList<>(), root);
+    }
+
+    private List<T> levelsTraverse(List<T> list, Node root) {
+        Queue<Node> queueLevels = new LinkedList<>();
+        queueLevels.offer(root);
+        while (list.size() != size) {
+            Node node = queueLevels.poll();
+            list.add(node.value);
+            if (node.leftNode != null) {
+                queueLevels.offer(node.leftNode);
+            }
+            if (node.rightNode != null) {
+                queueLevels.offer(node.rightNode);
+            }
+        }
+        return list;
+    }
+
+    /**
      * 清空二叉树
      */
     public void clear() {
@@ -133,27 +156,5 @@ public class BinaryTree<T> {
         root = null;
     }
 
-    /**
-     * 层序遍历
-     */
-    public List<T> levelsTraverse() {
-        return levelsTraverse(new ArrayList<>(), root);
-    }
-
-    private List<T> levelsTraverse(List<T> list, Node root) {
-        Queue<Node> queue = new LinkedList<>();
-        queue.offer(root);
-        while (list.size() != size) {
-            Node node = queue.poll();
-            list.add(node.value);
-            if (node.leftNode != null) {
-                queue.offer(node.leftNode);
-            }
-            if (node.rightNode != null) {
-                queue.offer(node.rightNode);
-            }
-        }
-        return list;
-    }
 }
 
