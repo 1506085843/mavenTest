@@ -186,8 +186,8 @@ public class TrieTree {
     /**
      * 判断前缀树上是否有 以 inputStr 开头的词语，
      * -有,则返回 inputStr 最后一个字符的子节点,若最后一个节点没有子节点则返回最后一个字符的节点
-     *      若返回的节点不为 null，且 matches 的大小为 0，则返回的是最后一个字符的子节点（即表明 inputStr 是前缀树上的一个词语的开头，如：前缀树上有 “一生一世” 这个词，但 inputStr 是 “一生一”）
-     *      若返回的节点不为 null，且 matches 的大小为 1，则返回的是 inputStr 倒数第二个字符的节点（即表明 inputStr 是前缀树上的一个词语，如：前缀树上有 “一生一世” 这个词，但 inputStr 是 “一生一世”）
+     * 若返回的节点不为 null，且 matches 的大小为 0，则返回的是最后一个字符的子节点（即表明 inputStr 是前缀树上的一个词语的开头，如：前缀树上有 “一生一世” 这个词，但 inputStr 是 “一生一”）
+     * 若返回的节点不为 null，且 matches 的大小为 1，则返回的是 inputStr 倒数第二个字符的节点（即表明 inputStr 是前缀树上的一个词语，如：前缀树上有 “一生一世” 这个词，但 inputStr 是 “一生一世”）
      * -没有,则返回 null
      */
     private Node havaWord(String inputStr, Node startNode, List<String> matches) {
@@ -215,33 +215,66 @@ public class TrieTree {
      * 字符串敏感词替换，若 text 文本中的的词语有在前缀树上的，将其替换为 *
      */
     public String sensitiveWordReplaceString(String text) {
+        return text != null ? markWordAndWordReplace(text, null, null) : text;
+    }
+
+    /**
+     * 字符串敏感词标记，若 text 文本中的的词语有在前缀树上的，用 strartSymbol和 endSymbol 将其标记
+     * 如：
+     * 例1：
+     * 假如 "张三"、"今天" 这两个词语在前缀树上
+     * 当调用 markWord("张三你好，你今天过得怎么样", "【", "】")；
+     * 得到的结果是 "【张三】你好，你【今天】过得怎么样"
+     *
+     * 例2：
+     * 若某一个词是另一个词的前缀，匹配时会将其拆分标记
+     * 假如 "张三的歌" 、"张三"、"张力" 这三个词语在前缀树上
+     * 当调用 markWord("张三的歌张力，你今天过得怎么样张力", "【", "】")；
+     * 得到的结果是: "【张三】【的歌】【张力】，你今天过得怎么样【张力】"
+     * 因为"张三的歌"这个词在前缀树上先匹配短的词语，即先匹配到 “张三” 。而不是匹配到"张三的歌"
+     * 所以"张三的歌"将被拆分为"张三" "的歌"分别标记
+     */
+    public String markWord(String text, String strartSymbol, String endSymbol) {
+        if (text != null && strartSymbol != null && endSymbol != null) {
+            return markWordAndWordReplace(text, strartSymbol, endSymbol);
+        }
+        return text;
+    }
+
+    //敏感词替换、敏感词标记通用方法
+    private String markWordAndWordReplace(String text, String strartSymbol, String endSymbol) {
         Node startNode = root;
-        StringBuilder result = new StringBuilder();//存储最终的结果
-        StringBuilder temXin = new StringBuilder();//存放* ，即匹配到一个字符就存入*
-        StringBuilder temMatch = new StringBuilder();//存放匹配到的字符，即匹配到一个字符就存入
+        //isMarkWord 为 true 则为敏感词标记，false 为敏感词替换
+        boolean isMarkWord = strartSymbol != null && endSymbol != null;
+        //存储最终的结果
+        StringBuilder result = new StringBuilder();
+        //若为敏感词替换（及isMarkWord为false）temXin用于存放* ，即匹配到一个字符就存入* 。若为敏感词标记，则temXin用于存放匹配的词
+        StringBuilder temXin = new StringBuilder();
+        //存放匹配到的字符，即匹配到一个字符就存入
+        StringBuilder temMatch = new StringBuilder();
         int index = 0;
         while (index != text.length()) {
             char ch = text.charAt(index);
             Map<Character, Node> childNodeMap = startNode.childNodeMap;
             if (childNodeMap.containsKey(ch)) {
-                temXin.append("*");
+                temXin.append(isMarkWord ? ch : "*");
                 Node node = childNodeMap.get(ch);
                 if (node.childNodeMap != null) {
                     startNode = node;
                 }
                 if (node.isWord) {
-                    appendResuleClearTemp(result, temXin, temMatch, temXin, startNode);
+                    appendResuleClearTemp(result, temXin, temMatch, temXin, startNode, strartSymbol, endSymbol);
                 } else {
                     temMatch.append(ch);
                 }
             } else {
                 if (temMatch.length() > 0) {
-                    appendResuleClearTemp(result, temMatch, temMatch, temXin, startNode);
+                    appendResuleClearTemp(result, temMatch, temMatch, temXin, startNode, strartSymbol, endSymbol);
                 }
                 Map<Character, Node> rootChildNodeMap = root.childNodeMap;
                 if (rootChildNodeMap.containsKey(ch)) {
                     temMatch.append(ch);
-                    temXin.append("*");
+                    temXin.append(isMarkWord ? ch : "*");
                     startNode = rootChildNodeMap.get(ch);
                 } else {
                     result.append(ch);
@@ -252,11 +285,16 @@ public class TrieTree {
         return result.toString();
     }
 
-    private void appendResuleClearTemp(StringBuilder result, StringBuilder joinBuilder, StringBuilder temMatch, StringBuilder temXin, Node startNode) {
+    private void appendResuleClearTemp(StringBuilder result, StringBuilder joinBuilder, StringBuilder temMatch, StringBuilder temXin, Node startNode, String strartSymbol, String endSymbol) {
+        if (strartSymbol != null) {
+            result.append(strartSymbol);
+        }
         result.append(joinBuilder);
+        if (endSymbol != null) {
+            result.append(endSymbol);
+        }
         temMatch.setLength(0);
         temXin.setLength(0);
         startNode = root;
     }
-
 }
