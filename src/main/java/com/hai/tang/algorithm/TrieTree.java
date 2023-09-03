@@ -203,6 +203,7 @@ public class TrieTree {
             } else {
                 startNode.setIsWord(false);
             }
+            size--;
         }
     }
 
