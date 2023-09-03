@@ -161,9 +161,55 @@ public class TrieTree {
     }
 
     /**
-     * 判断前缀树上的所有词语，是否有等于 str 的
+     * 从前缀树中删除词语 str
+     * 如果 str 每个字符节点下都只有其下一个字符节点，并且最后一个字符节点下没有节点则可以从根节点删除这个词语，否则将词语的最后一个字符的词语标识设置为false
      */
-    public boolean equelWord(String str) {
+    public void deleteWord(String str) {
+        //判断前缀树上是否有该词语
+        if (null != str && haveWord(str)) {
+            char[] charArray = str.toCharArray();
+            boolean canDelete = true;
+            Node startNode = root;
+            for (int i = 0; i < charArray.length; i++) {
+                char ch = charArray[i];
+                Map<Character, Node> childNodeMap = startNode.childNodeMap;
+                if (i != charArray.length - 1) {
+                    Node node = childNodeMap.get(ch);
+                    if (node.childNodeMap.size() > 1) {
+                        canDelete = false;
+                    }
+                    startNode = node;
+                } else {
+                    Map<Character, Node> lastNodoChildMap = startNode.childNodeMap;
+                    if (!canDelete) {
+                        startNode = lastNodoChildMap.get(ch);
+                        break;
+                    }
+                    if (lastNodoChildMap != null) {
+                        Map<Character, Node> childNodeMap1 = lastNodoChildMap.get(ch).childNodeMap;
+                        if (null != childNodeMap1) {
+                            canDelete = false;
+                            startNode = lastNodoChildMap.get(ch);
+                        }
+//                        else {
+//                            canDelete = true;
+//                        }
+                    }
+                }
+            }
+
+            if (canDelete) {
+                root.childNodeMap.remove(charArray[0]);
+            } else {
+                startNode.setIsWord(false);
+            }
+        }
+    }
+
+    /**
+     * 判断前缀树上的所有词语，词语  str
+     */
+    public boolean haveWord(String str) {
         if (null == str) {
             return false;
         }
@@ -221,7 +267,7 @@ public class TrieTree {
     /**
      * 字符串敏感词替换，若 text 文本中的的词语有在前缀树上的，将其替换为 *
      */
-    public String sensitiveWordReplaceString(String text) {
+    public String sensitiveWordReplace(String text) {
         return text != null ? markWordAndWordReplace(text, null, null) : text;
     }
 
