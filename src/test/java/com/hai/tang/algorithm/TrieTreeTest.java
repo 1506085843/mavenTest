@@ -19,7 +19,7 @@ public class TrieTreeTest {
         for (String s : array) {
             t.add(s);
         }
-       // System.out.println(t.getRoot());
+       // System.out.println(t.getRootNode());
          System.out.println(t.getMatchStr("张"));
          //System.out.println(t.havaCompleteWord("张三"));
          System.out.println(t.equelWord("李四的"));

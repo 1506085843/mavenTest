@@ -44,7 +44,10 @@ public class TrieTree {
         }
     }
 
-    public Node getRoot() {
+    /**
+     * 获取前缀树的词语数
+     */
+    public Node getRootNode() {
         return root;
     }
 
@@ -76,17 +79,18 @@ public class TrieTree {
     /**
      * 向前缀树中增加节点
      */
-    public void add(String addValue) {
-        if (addValue == null || addValue.trim().isEmpty()) {
+    public void add(String str) {
+        if (str == null || str.trim().isEmpty()) {
             return;
         }
-        char[] charArray = addValue.toCharArray();
         Map<Character, Node> fatherNodeMap = root.childNodeMap;
-        for (int i = 0; i < charArray.length; i++) {
-            char ch = charArray[i];
+        int index = 0;
+        int addValueLength = str.length();
+        while (index != addValueLength) {
+            char ch = str.charAt(index);
             if (fatherNodeMap.containsKey(ch)) {
                 Node node = fatherNodeMap.get(ch);
-                if (i != charArray.length - 1) {
+                if (index != addValueLength - 1) {
                     if (node.childNodeMap == null) {
                         node.childNodeMap = new HashMap<>();
                     }
@@ -98,7 +102,7 @@ public class TrieTree {
                     }
                 }
             } else {
-                if (i != charArray.length - 1) {
+                if (index != addValueLength - 1) {
                     Node nodeNew = new Node(new HashMap<>(), false);
                     fatherNodeMap.put(ch, nodeNew);
                     fatherNodeMap = nodeNew.childNodeMap;
@@ -108,6 +112,7 @@ public class TrieTree {
                     size++;
                 }
             }
+            index++;
         }
     }
 
@@ -181,8 +186,8 @@ public class TrieTree {
     /**
      * 判断前缀树上是否有 以 inputStr 开头的词语，
      * -有,则返回 inputStr 最后一个字符的子节点,若最后一个节点没有子节点则返回最后一个字符的节点
-     * 若返回的节点不为 null，且 matches 的大小为 0，则返回的是最后一个字符的子节点（即表明 inputStr 是前缀树上的一个词语的开头，如：前缀树上有 “一生一世” 这个词，但 inputStr 是 “一生一”）
-     * 若返回的节点不为 null，且 matches 的大小为 1，则返回的是 inputStr 倒数第二个字符的节点（即表明 inputStr 是前缀树上的一个词语，如：前缀树上有 “一生一世” 这个词，但 inputStr 是 “一生一世”）
+     *      若返回的节点不为 null，且 matches 的大小为 0，则返回的是最后一个字符的子节点（即表明 inputStr 是前缀树上的一个词语的开头，如：前缀树上有 “一生一世” 这个词，但 inputStr 是 “一生一”）
+     *      若返回的节点不为 null，且 matches 的大小为 1，则返回的是 inputStr 倒数第二个字符的节点（即表明 inputStr 是前缀树上的一个词语，如：前缀树上有 “一生一世” 这个词，但 inputStr 是 “一生一世”）
      * -没有,则返回 null
      */
     private Node havaWord(String inputStr, Node startNode, List<String> matches) {
