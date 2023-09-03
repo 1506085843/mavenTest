@@ -15,7 +15,7 @@ public class TrieTree {
     /**
      * 根节点
      */
-    private final Node root = new Node(new HashMap<>(), false);
+    private Node root = new Node(new HashMap<>(), false);
 
 
     public static class Node {
@@ -49,6 +49,11 @@ public class TrieTree {
      */
     public Node getRootNode() {
         return root;
+    }
+
+    public void clearRootNode() {
+        root = new Node(new HashMap<>(), false);
+        size = 0;
     }
 
     /**
@@ -175,8 +180,10 @@ public class TrieTree {
             return false;
         }
         List<String> list = new ArrayList<>();
-        havaWord(str, root, list);
-
+        Node node = havaWord(str, root, list);
+        if (node == null) {
+            return false;
+        }
         if (list.size() == 0) {
             return true;
         }
@@ -225,7 +232,7 @@ public class TrieTree {
      * 假如 "张三"、"今天" 这两个词语在前缀树上
      * 当调用 markWord("张三你好，你今天过得怎么样", "【", "】")；
      * 得到的结果是 "【张三】你好，你【今天】过得怎么样"
-     *
+     * <p>
      * 例2：
      * 若某一个词是另一个词的前缀，匹配时会将其拆分标记
      * 假如 "张三的歌" 、"张三"、"张力" 这三个词语在前缀树上
