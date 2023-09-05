@@ -18,7 +18,7 @@ public class TrieTree {
     private Node root = new Node(new HashMap<>(), false);
 
 
-    public static class Node {
+    private static class Node {
         private Map<Character, Node> childNodeMap;
         private boolean isWord;
 
@@ -191,9 +191,6 @@ public class TrieTree {
                             canDelete = false;
                             startNode = lastNodoChildMap.get(ch);
                         }
-//                        else {
-//                            canDelete = true;
-//                        }
                     }
                 }
             }
@@ -317,13 +314,27 @@ public class TrieTree {
                     startNode = node;
                 }
                 if (node.isWord) {
-                    appendResuleClearTemp(result, temXin, temMatch, temXin, startNode, strartSymbol, endSymbol);
+                    //将该词语用*号替换拼接到result , 并清空 temXin、temMatch
+                    appendResuleClearTemp(result, temXin, temMatch, temXin, strartSymbol, endSymbol);
+                    //判断该字符后的字符在前缀树上是否在该词语的后面（如：text是"张力懦夫"，当前字符ch是"张"，匹配到"张力"这个词语，但是"张力懦夫"也是个词语，需要向后再判断其是否在前缀树上，并判断其是否是一个词语）
+                    int nextWordEndIndex = nextCh(text, index + 1, index, node);
+                    if (nextWordEndIndex > index) {
+                        int nextStart = index + 1;
+                        for (int i = nextStart; i <= nextWordEndIndex; i++) {
+                            char nextCh = text.charAt(i);
+                            temXin.append(isMarkWord ? nextCh : "*");
+                            index++;
+                        }
+                        appendResuleClearTemp(result, temXin, temMatch, temXin, strartSymbol, endSymbol);
+                    }
+                    //重新设置根节点为开始遍历的节点，方便下一个字符匹配
+                    startNode = root;
                 } else {
                     temMatch.append(ch);
                 }
             } else {
                 if (temMatch.length() > 0) {
-                    appendResuleClearTemp(result, temMatch, temMatch, temXin, startNode, strartSymbol, endSymbol);
+                    appendResuleClearTemp(result, temMatch, temMatch, temXin, strartSymbol, endSymbol);
                 }
                 Map<Character, Node> rootChildNodeMap = root.childNodeMap;
                 if (rootChildNodeMap.containsKey(ch)) {
@@ -339,7 +350,7 @@ public class TrieTree {
         return result.toString();
     }
 
-    private void appendResuleClearTemp(StringBuilder result, StringBuilder joinBuilder, StringBuilder temMatch, StringBuilder temXin, Node startNode, String strartSymbol, String endSymbol) {
+    private void appendResuleClearTemp(StringBuilder result, StringBuilder joinBuilder, StringBuilder temMatch, StringBuilder temXin, String strartSymbol, String endSymbol) {
         if (strartSymbol != null) {
             result.append(strartSymbol);
         }
@@ -349,6 +360,25 @@ public class TrieTree {
         }
         temMatch.setLength(0);
         temXin.setLength(0);
-        startNode = root;
+    }
+
+    //返回从text 的 index 下标开始，node 节点下匹配到的最长词语，返回最长的词语的最后一个字符在 text 的下标，即 wordIndex
+    private int nextCh(String text, int index, int wordIndex, Node node) {
+        if (index <= text.length() - 1) {
+            char nextCh = text.charAt(index);
+            Map<Character, Node> childNodeMap = node.childNodeMap;
+            if (childNodeMap != null) {
+                if (childNodeMap.containsKey(nextCh)) {
+                    Node nextNode = childNodeMap.get(nextCh);
+                    if (nextNode.isWord) {
+                        wordIndex = index;
+                    }
+                    return nextCh(text, index + 1, wordIndex, childNodeMap.get(nextCh));
+                } else {
+                    return wordIndex;
+                }
+            }
+        }
+        return wordIndex;
     }
 }
