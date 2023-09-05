@@ -276,14 +276,6 @@ public class TrieTree {
      * 假如 "张三"、"今天" 这两个词语在前缀树上
      * 当调用 markWord("张三你好，你今天过得怎么样", "【", "】")；
      * 得到的结果是 "【张三】你好，你【今天】过得怎么样"
-     * <p>
-     * 例2：
-     * 若某一个词是另一个词的前缀，匹配时会将其拆分标记
-     * 假如 "张三的歌" 、"张三"、"张力" 这三个词语在前缀树上
-     * 当调用 markWord("张三的歌张力，你今天过得怎么样张力", "【", "】")；
-     * 得到的结果是: "【张三】【的歌】【张力】，你今天过得怎么样【张力】"
-     * 因为"张三的歌"这个词在前缀树上先匹配短的词语，即先匹配到 “张三” 。而不是匹配到"张三的歌"
-     * 所以"张三的歌"将被拆分为"张三" "的歌"分别标记
      */
     public String markWord(String text, String strartSymbol, String endSymbol) {
         if (text != null && strartSymbol != null && endSymbol != null) {
@@ -299,47 +291,51 @@ public class TrieTree {
         boolean isMarkWord = strartSymbol != null && endSymbol != null;
         //存储最终的结果
         StringBuilder result = new StringBuilder();
-        //若为敏感词替换（及isMarkWord为false）temXin用于存放* ，即匹配到一个字符就存入* 。若为敏感词标记，则temXin用于存放匹配的词
-        StringBuilder temXin = new StringBuilder();
+        //若为敏感词替换（也就是isMarkWord为false）starOrCh用于存放* ，即匹配到一个字符就存入* 。若为敏感词标记，则starOrCh用于存放匹配的词
+        StringBuilder starOrCh = new StringBuilder();
         //存放匹配到的字符，即匹配到一个字符就存入
-        StringBuilder temMatch = new StringBuilder();
+        StringBuilder matchCh = new StringBuilder();
         int index = 0;
         while (index != text.length()) {
             char ch = text.charAt(index);
             Map<Character, Node> childNodeMap = startNode.childNodeMap;
             if (childNodeMap.containsKey(ch)) {
-                temXin.append(isMarkWord ? ch : "*");
+                starOrCh.append(isMarkWord ? ch : "*");
                 Node node = childNodeMap.get(ch);
                 if (node.childNodeMap != null) {
                     startNode = node;
                 }
                 if (node.isWord) {
-                    //将该词语用*号替换拼接到result , 并清空 temXin、temMatch
-                    appendResuleClearTemp(result, temXin, temMatch, temXin, strartSymbol, endSymbol);
+                    StringBuilder saveTemp = new StringBuilder(starOrCh);
                     //判断该字符后的字符在前缀树上是否在该词语的后面（如：text是"张力懦夫"，当前字符ch是"张"，匹配到"张力"这个词语，但是"张力懦夫"也是个词语，需要向后再判断其是否在前缀树上，并判断其是否是一个词语）
                     int nextWordEndIndex = nextCh(text, index + 1, index, node);
                     if (nextWordEndIndex > index) {
                         int nextStart = index + 1;
+                        StringBuilder temp = new StringBuilder();
+                        temp.append(saveTemp);
                         for (int i = nextStart; i <= nextWordEndIndex; i++) {
                             char nextCh = text.charAt(i);
-                            temXin.append(isMarkWord ? nextCh : "*");
+                            temp.append(isMarkWord ? nextCh : "*");
                             index++;
                         }
-                        appendResuleClearTemp(result, temXin, temMatch, temXin, strartSymbol, endSymbol);
+                        appendResuleClearTemp(result, temp, matchCh, starOrCh, strartSymbol, endSymbol);
+                    }else{
+                        //将该词语用*号替换拼接到result , 并清空 starOrCh、temMatch
+                        appendResuleClearTemp(result, starOrCh, matchCh, starOrCh, strartSymbol, endSymbol);
                     }
                     //重新设置根节点为开始遍历的节点，方便下一个字符匹配
                     startNode = root;
                 } else {
-                    temMatch.append(ch);
+                    matchCh.append(ch);
                 }
             } else {
-                if (temMatch.length() > 0) {
-                    appendResuleClearTemp(result, temMatch, temMatch, temXin, strartSymbol, endSymbol);
+                if (matchCh.length() > 0) {
+                    appendResuleClearTemp(result, matchCh, matchCh, starOrCh);
                 }
                 Map<Character, Node> rootChildNodeMap = root.childNodeMap;
                 if (rootChildNodeMap.containsKey(ch)) {
-                    temMatch.append(ch);
-                    temXin.append(isMarkWord ? ch : "*");
+                    matchCh.append(ch);
+                    starOrCh.append(isMarkWord ? ch : "*");
                     startNode = rootChildNodeMap.get(ch);
                 } else {
                     result.append(ch);
@@ -350,7 +346,7 @@ public class TrieTree {
         return result.toString();
     }
 
-    private void appendResuleClearTemp(StringBuilder result, StringBuilder joinBuilder, StringBuilder temMatch, StringBuilder temXin, String strartSymbol, String endSymbol) {
+    private void appendResuleClearTemp(StringBuilder result, StringBuilder joinBuilder, StringBuilder matchCh, StringBuilder starOrCh, String strartSymbol, String endSymbol) {
         if (strartSymbol != null) {
             result.append(strartSymbol);
         }
@@ -358,8 +354,14 @@ public class TrieTree {
         if (endSymbol != null) {
             result.append(endSymbol);
         }
-        temMatch.setLength(0);
-        temXin.setLength(0);
+        matchCh.setLength(0);
+        starOrCh.setLength(0);
+    }
+
+    private void appendResuleClearTemp(StringBuilder result, StringBuilder joinBuilder, StringBuilder matchCh, StringBuilder starOrCh) {
+        result.append(joinBuilder);
+        matchCh.setLength(0);
+        starOrCh.setLength(0);
     }
 
     //返回从text 的 index 下标开始，node 节点下匹配到的最长词语，返回最长的词语的最后一个字符在 text 的下标，即 wordIndex
