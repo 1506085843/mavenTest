@@ -160,6 +160,7 @@ public class TrieTree {
         }
     }
 
+
     /**
      * 从前缀树中删除词语 str
      * 如果 str 每个字符节点下都只有其下一个字符节点，并且最后一个字符节点下没有节点则可以从根节点删除这个词语，否则将词语的最后一个字符的词语标识设置为false
@@ -167,42 +168,51 @@ public class TrieTree {
     public void deleteWord(String str) {
         //判断前缀树上是否有该词语
         if (null != str && haveWord(str)) {
-            char[] charArray = str.toCharArray();
-            boolean canDelete = true;
+            int index = 0;
+            Node deleteNode = null;
             Node startNode = root;
+            char[] charArray = str.toCharArray();
             for (int i = 0; i < charArray.length; i++) {
                 char ch = charArray[i];
                 Map<Character, Node> childNodeMap = startNode.childNodeMap;
                 if (i != charArray.length - 1) {
                     Node node = childNodeMap.get(ch);
-                    if (node.childNodeMap.size() > 1) {
-                        canDelete = false;
+                    if (node.childNodeMap.size() > 1 || node.isWord) {
+                        deleteNode = node;
+                        index = i;
                     }
                     startNode = node;
                 } else {
-                    Map<Character, Node> lastNodoChildMap = startNode.childNodeMap;
-                    if (!canDelete) {
-                        startNode = lastNodoChildMap.get(ch);
-                        break;
-                    }
-                    if (lastNodoChildMap != null) {
-                        Map<Character, Node> childNodeMap1 = lastNodoChildMap.get(ch).childNodeMap;
-                        if (null != childNodeMap1) {
-                            canDelete = false;
-                            startNode = lastNodoChildMap.get(ch);
+                    Node node = childNodeMap.get(ch);
+                    Map<Character, Node> childNodeMap1 = node.childNodeMap;
+                    node.isWord = false;
+                    if (null != childNodeMap1 && childNodeMap1.size() > 0) {
+                        //如果该最后一个字符不是叶子节点，即它还有子节点
+                        deleteNode = null;
+                    } else {
+                        //如果该最后一个字符是叶子节点
+                        if (deleteNode == null) {
+                            deleteNode = root;
+                        } else {
+                            index++;
                         }
                     }
                 }
             }
 
-            if (canDelete) {
-                root.childNodeMap.remove(charArray[0]);
-            } else {
-                startNode.setIsWord(false);
+            if (deleteNode != null) {
+                Map<Character, Node> childNodeMap = deleteNode.childNodeMap;
+                if (childNodeMap.size() > 1) {
+                    childNodeMap.remove(str.charAt(index));
+                } else {
+                    deleteNode.childNodeMap = null;
+
+                }
             }
             size--;
         }
     }
+
 
     /**
      * 判断前缀树上的所有词语，词语  str
@@ -319,7 +329,7 @@ public class TrieTree {
                             index++;
                         }
                         appendResuleClearTemp(result, temp, matchCh, starOrCh, strartSymbol, endSymbol);
-                    }else{
+                    } else {
                         //将该词语用*号替换拼接到result , 并清空 starOrCh、temMatch
                         appendResuleClearTemp(result, starOrCh, matchCh, starOrCh, strartSymbol, endSymbol);
                     }
