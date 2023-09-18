@@ -66,6 +66,34 @@ public class SortTest {
         System.out.println(doubleList);
     }
 
+
+    @DisplayName("List字符串自定义排序")
+    @Test
+    public void listStringSort() {
+        //待排序的list
+        List<String> inputList = new ArrayList<>(Arrays.asList("salesgroup", "asstacttype", "asstact", "salesman", "currency", "basecurrency", "org", "billtypeid"));
+
+        // 定义排序顺序
+        List<String> sortOrder = Arrays.asList("org", "asstacttype", "asstact", "salesorg", "salesdept", "salesgroup", "salesman", "billtypeid", "currency", "basecurrency");
+
+        // 创建一个自定义的Comparator,按照 sortOrder 顺序排序
+        Comparator<String> customComparator = (s1, s2) -> {
+            int s1Index = sortOrder.indexOf(s1);
+            int s2Index = sortOrder.indexOf(s2);
+            if (s1Index == -1 || s2Index == -1) {
+                return s1.compareTo(s2); // 如果某个元素不在排序顺序中，就按字典序排序
+            }
+            return s1Index - s2Index; // 按排序顺序排序
+        };
+
+        // 使用自定义的Comparator对inputList进行排序
+        inputList.sort(customComparator);
+
+        //输出：[org, asstacttype, asstact, salesgroup, salesman, billtypeid, currency, basecurrency]
+        System.out.println(inputList);
+    }
+
+
     @DisplayName("Map根据key排序")
     @Test
     public void mapKeySort() {

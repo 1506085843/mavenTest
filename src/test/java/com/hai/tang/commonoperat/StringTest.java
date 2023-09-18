@@ -3,7 +3,11 @@ package com.hai.tang.commonoperat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @DisplayName("字符串测试类")
 public class StringTest {
@@ -224,4 +228,48 @@ public class StringTest {
         // 或者 String str4 = str.replaceAll("\\$", "\\\\\\$");
         System.out.println(str4);   //abc  dk`jge`f   g</script>h.ij   k/l   m//\$\siug\\h
     }
+
+    @Test
+    @DisplayName("字符串正则匹配与连接")
+    public void stringRegularLink() {
+        //匹配字符串中所有方括号里的时间然后用~连接两个时间
+        String input = "结算组织：张三有限公司测试;开票日期范围：【2023-09-01   2023-09-02】; 单据日期范围：【2023-09-04 2023-09-06】; 生成凭证日期：【2023-09-9 2023-09-11】";
+
+        Pattern pattern = Pattern.compile("【([^【】]+)】");
+        Matcher matcher = pattern.matcher(input);
+        StringBuffer result = new StringBuffer();
+
+        while (matcher.find()) {
+            String dateText = matcher.group(1);
+            String concatenatedDate = dateText.replaceAll("\\s+", "~");
+            matcher.appendReplacement(result, "【" + concatenatedDate + "】");
+        }
+        matcher.appendTail(result);
+        //输出：结算组织：张三有限公司测试;开票日期范围：【2023-09-01~2023-09-02】; 单据日期范围：【2023-09-04~2023-09-06】; 生成凭证日期：【2023-09-9~2023-09-11】
+        System.out.println(result);
+    }
+
+    @Test
+    @DisplayName("字符串正则匹配")
+    public void stringRegular() {
+        // 匹配【】括号中的内容保存到 resultList 中
+        String input = "结算组织：张三有限公司测试;开票日期范围：【2023-09-01   2023-09-02】; 单据日期范围：【2023-09-04 2023-09-06】; 生成凭证日期：【2023-09-9 2023-09-11】";
+
+        String regex = "【([^】]+)】";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+
+        // 存储匹配结果的List
+        List<String> resultList = new ArrayList<>();
+
+        // 遍历匹配结果，将括号中的内容添加到List中
+        while (matcher.find()) {
+            String match = matcher.group(1);
+            resultList.add(match.trim());
+        }
+        //输出：[2023-09-01   2023-09-02, 2023-09-04 2023-09-06, 2023-09-9 2023-09-11]
+        System.out.println(resultList);
+    }
+
+
 }
