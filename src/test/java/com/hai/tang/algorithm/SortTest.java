@@ -43,6 +43,31 @@ public class SortTest {
         System.out.println(Arrays.toString(arr));
     }
 
+    @DisplayName("二维数组排序")
+    @Test
+    public void twoArraySort() {
+        int[][] intervals = {{8, 5}, {15, 18}, {1, 99}, {2, 6}, {10, 99}, {1000, 99}, {11, 99}, {17, 99}, {31, 99}, {5, 99}, {56, 99}, {77, 99}, {49, 99}};
+
+        // 使用Java 8的Stream API和Lambda表达式进行排序
+        intervals = Arrays.stream(intervals)
+                .sorted(Comparator.comparingInt(a -> a[0]))
+                .toArray(int[][]::new);
+
+        //或者采用下面的方式排序（速度上会比上面的排序方式快几毫秒）
+//        Arrays.sort(intervals, new Comparator<int[]>() {
+//            public int compare(int[] interval1, int[] interval2) {
+//                return interval1[0] - interval2[0];
+//            }
+//        });
+
+        Arrays.sort(intervals, Comparator.comparingInt(interval -> interval[0]));
+
+        // 输出排序后的二维数组
+        for (int[] interval : intervals) {
+            System.out.println(Arrays.toString(interval));
+        }
+    }
+
 
     @DisplayName("List排序")
     @Test
