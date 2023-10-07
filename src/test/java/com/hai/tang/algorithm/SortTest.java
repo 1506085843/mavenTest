@@ -118,6 +118,37 @@ public class SortTest {
         System.out.println(inputList);
     }
 
+    @DisplayName("List根据字符串中数字排序")
+    @Test
+    public void listStringInSort() {
+        //根据章节数进行升序排序，若字符串中没有章节数就排在最后
+        List<String> list = new ArrayList<>();
+        list.add("第10章 神奇的力量.md");
+        list.add("第1111章 魔界.md");
+        list.add("第2章 出发.md");
+        list.add("哈哈第2522章 大结局.md");
+        list.add("aaa山下海棠第25章 新伙伴.md");
+        list.add("其他文件.txt");
+        list.add("指南.md");
+
+        Comparator<String> comparator = (s1, s2) -> {
+            int number1 = extractNumber(s1);
+            int number2 = extractNumber(s2);
+            return Integer.compare(number1, number2);
+        };
+
+        list.sort(comparator);
+        System.out.println(list);
+    }
+
+    private static int extractNumber(String s) {
+        try {
+            String number = s.split("章")[0].replaceAll("[^0-9]", "");
+            return Integer.parseInt(number);
+        } catch (Exception e) {
+            return Integer.MAX_VALUE;
+        }
+    }
 
     @DisplayName("Map根据key排序")
     @Test
