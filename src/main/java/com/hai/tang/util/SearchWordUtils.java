@@ -11,17 +11,17 @@ public class SearchWordUtils {
 
     //当在文件夹中搜索时，遇到以下非文本格式的文件则跳过
     public static List<String> excludeFileType = Arrays.asList(
-            "jar", "zip", "rar", "7z", "tar", "gzip", "gz", "xz", "bz2", "doc", "class", "pak",
-            "xls", "ppt", "pdf", "ofd", "docx", "xlsx", "pptx", "jpg", "jpge", "gif", "png", "ett",
-            "xltd", "war", "hprof", "m4a", "swf", "mobi", "jpeg", "tif", "tiff", "svg", "psd", "eps",
-            "mp3", "aac", "mp4", "avi", "flv", "mkv", "mpeg", "msi", "tgz", "mdf", "xlsm", "rm", "ogg",
-            "rmvb", "apk", "ts", "map", "car", "mov", "wav", "raw", "dll", "woff", "igs", "dwt", "dng",
-            "eot", "otf", "ico", "ttf", "ttc", "fon", "dl_", "pd_", "ex_", "etl", "dwf", "iges", "wpt",
-            "sys", "iso", "isz", "esd", "wim", "gho", "dmg", "mpf", "exe", "ldf", "mpg", "3dm", "fbx",
-            "wmv", "3gp", "drawio", "dcm", "tga", "bmp", "jfif", "webp", "dwg", "dxf", "vsd", "vsdx",
-            "ifc", "dwfx", "stl", "cf2", "plt", "obj", "3ds", "stl", "ply", "gltf", "glb", "off", "et",
-            "dae", "wrl", "3mf", "ifc", "brep", "step", "iges", "fcstd", "bim", "epub", "wmf", "emf",
-            "xmind", "odt", "ods", "ots", "odp", "otp", "six", "ott", "fodt", "fods", "wps", "dps");
+            "jar", "zip", "rar", "7z", "tar", "gzip", "gz", "xz", "bz2", "doc", "class", "pak","webm","appx",
+            "xls", "ppt", "pdf", "ofd", "docx", "xlsx", "pptx", "jpg", "jpge", "gif", "png", "ett","ram",
+            "xltd", "war", "hprof", "m4a", "swf", "mobi", "jpeg", "tif", "tiff", "svg", "psd", "eps","qsv",
+            "mp3", "aac", "mp4", "avi", "flv", "mkv", "mpeg", "msi", "tgz", "mdf", "xlsm", "rm", "ogg","mod",
+            "rmvb", "apk", "ts", "map", "car", "mov", "wav", "raw", "dll", "woff", "igs", "dwt", "dng","msix",
+            "eot", "otf", "ico", "ttf", "ttc", "fon", "dl_", "pd_", "ex_", "etl", "dwf", "iges", "wpt","cer",
+            "sys", "iso", "isz", "esd", "wim", "gho", "dmg", "mpf", "exe", "ldf", "mpg", "3dm", "fbx","bin",
+            "wmv", "3gp", "drawio", "dcm", "tga", "bmp", "jfif", "webp", "dwg", "dxf", "vsd", "vsdx","api",
+            "ifc", "dwfx", "stl", "cf2", "plt", "obj", "3ds", "stl", "ply", "gltf", "glb", "off", "et","mpp",
+            "dae", "wrl", "3mf", "ifc", "brep", "step", "iges", "fcstd", "bim", "epub", "wmf", "emf","CHS",
+            "xmind", "odt", "ods", "ots", "odp", "otp", "six", "ott", "fodt", "fods", "wps", "dps","x3d");
 
     /**
      * 搜索指定文件中的关键字
