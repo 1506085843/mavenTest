@@ -133,4 +133,27 @@ public class SearchWordUtilsTest {
         }
     }
 
+    @DisplayName("在指定文件夹下，根据某一文件名查询第一个索索到的文件的完整路径")
+    @Test
+    public void getFilePath() {
+        //要查找的文件夹路径
+        String dir = "D:\\GoogleDown\\";
+        //查找文件名叫 xelem.xml 的文件，然后返回文件的路径。（即使不同文件夹有多个相同文件，找到第一个就立即返回，剩下的就不再继续找）
+        String filesName = "xelem.xml";
+        //开始查找
+        String filesPath = SearchWordUtils.getFilesPath(dir, filesName);
+        System.out.println(filesPath);
+    }
+
+    @DisplayName("在指定文件夹下，根据多个文件名查询返回文件的完整的文件路径")
+    @Test
+    public void getFilesPath() {
+        //要查找的文件夹路径
+        String dir = "D:\\GoogleDown\\";
+        //查找文件名叫 guava-30.1.1-jre.jar 、 former.html 、xelem.xml 的文件，然后返回文件的路径
+        List<String> filesName = Arrays.asList("guava-30.1.1-jre.jar", "former.html", "xelem.xml");
+        //开始查找
+        List<String> filesPath = SearchWordUtils.getFilesPath(dir, filesName);
+        filesPath.forEach(System.out::println);
+    }
 }

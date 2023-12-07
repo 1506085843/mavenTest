@@ -279,6 +279,52 @@ public class SearchWordUtils {
         }
         return list;
     }
+
+    /**
+     * @param dirPath      要搜索的文件夹路径
+     * @param fileNamelist 要搜索的文件名列表
+     * @return 返回要查找的文件的路径
+     */
+    public static List<String> getFilesPath(String dirPath, List<String> fileNamelist) {
+        return getFilesPath(dirPath, fileNamelist, new ArrayList<>(), false);
+    }
+
+    /**
+     * @param dirPath  要搜索的文件夹路径
+     * @param fileName 要搜索的文件名
+     * @return 返回要查找的文件的路径(即使不同文件夹有多个一样的文件，只返回找到的第一个)
+     */
+    public static String getFilesPath(String dirPath, String fileName) {
+        List<String> filesPath = getFilesPath(dirPath, Collections.singletonList(fileName), new ArrayList<>(), true);
+        return filesPath.size() == 0 ? "" : filesPath.get(0);
+    }
+
+    //遍历文件夹下所有的文件，根据 fileNamelist 中的文件名 ，获取文件的文件路径
+    private static List<String> getFilesPath(String dirPath, List<String> fileNamelist, List<String> list, boolean justQueryFirst) {
+        File file = new File(dirPath);
+        File[] tempList = file.listFiles();
+        if (null != tempList) {
+            for (int i = 0; i < tempList.length; i++) {
+                String filePath = tempList[i].toString();
+                if (tempList[i].isFile()) {
+                    String fileName = filePath.substring(filePath.lastIndexOf(File.separator) + 1);
+                    if (null != fileNamelist && fileNamelist.contains(fileName)) {
+                        list.add(filePath);
+                    }
+                    if (justQueryFirst && list.size() == 1) {
+                        return list;
+                    }
+                } else {
+                    if (justQueryFirst && list.size() == 1) {
+                        return list;
+                    }
+                    //如果是文件夹则递归
+                    getFilesPath(filePath, fileNamelist, list, justQueryFirst);
+                }
+            }
+        }
+        return list;
+    }
 }
 
 
