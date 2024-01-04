@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @DisplayName("字符串测试类")
 public class StringTest {
@@ -271,5 +272,26 @@ public class StringTest {
         System.out.println(resultList);
     }
 
+    @Test
+    @DisplayName("字符串中查找是否至少包含List的一个元素")
+    public void bstTest1() {
+        String str = "我们经历了一场兵慌马乱的战争，没有硝烟，没有流血，却伤亡惨重。青春是美好的，带给了我们很多的快乐和激情，可是青春又是悲伤的，当有一天青春不在了，我们会拼命的去怀念。";
+        List<String> listA = Arrays.asList("经历", "兵慌马乱", "硝烟","快乐","悲伤");
+        List<String> listB = Arrays.asList("aa", "bb", "cc","dd","悲伤");
 
+        boolean containsInStrA = listA.stream().anyMatch(str::contains);
+        boolean containsInStrB = listB.stream().anyMatch(str::contains);
+        System.out.println("str字符串至少包含listA中的一个元素: " + containsInStrA);  // 输出: str字符串至少包含listA中的一个元素:  true
+        System.out.println("str字符串至少包含listB中的一个元素: " + containsInStrB);  // 输出: str字符串至少包含listB中的一个元素:  true
+    }
+
+    @Test
+    @DisplayName("字符串中查找包含的List元素")
+    public void bstTest2() {
+        String str = "我们经历了一场兵慌马乱的战争，没有硝烟，没有流血，却伤亡惨重。青春是美好的，带给了我们很多的快乐和激情，可是青春又是悲伤的，当有一天青春不在了，我们会拼命的去怀念。";
+        List<String> list = Arrays.asList("aa", "bb", "cc","快乐","悲伤");
+
+        List<String> result = list.stream().filter(str::contains).collect(Collectors.toList());
+        System.out.println("str中包含的list元素有: " + result);//str中包含的list元素有: [快乐, 悲伤]
+    }
 }
