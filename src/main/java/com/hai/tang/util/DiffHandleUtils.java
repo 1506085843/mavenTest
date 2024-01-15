@@ -301,7 +301,7 @@ public class DiffHandleUtils {
             InputStream inputStream3 = DiffHandleUtils.class.getClassLoader().getResourceAsStream("jscss/github.min.css");
             FileUtils.copyInputStreamToFile(inputStream3, new File(jsCssPath + "github.min.css"));
         } catch (IOException e) {
+            e.printStackTrace();
         }
-
     }
 }
