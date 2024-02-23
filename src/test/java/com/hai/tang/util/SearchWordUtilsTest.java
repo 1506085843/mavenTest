@@ -78,6 +78,19 @@ public class SearchWordUtilsTest {
         }
     }
 
+    @DisplayName("在文件夹下的所有指定类型的文本文件中搜索多个字符串，返回文件路径")
+    @Test
+    public void containSearchStrFiles() {
+        String dir = "D:\\迅雷下载\\";
+        List<String> searchStrList = Arrays.asList("张三", "李四");
+        List<String> fileType = Arrays.asList("txt", "log");
+        List<String> containFilePath = SearchWordUtils.containSearchStrFiles(dir, searchStrList, fileType);
+        System.out.println();
+        for (String filePath : containFilePath) {
+            System.out.println("含有张三或李四的文件路径： " + filePath);
+        }
+    }
+
     @DisplayName("在文件夹下,除排除的文件夹外的所有指定类型的文本文件中搜索字符串")
     @Test
     public void searWord_exclude_speciFiles() {

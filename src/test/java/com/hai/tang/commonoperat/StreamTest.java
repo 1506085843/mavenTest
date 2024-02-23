@@ -477,5 +477,15 @@ public class StreamTest {
         System.out.println(map);
     }
 
-
+    @Test
+    @DisplayName("判断字符串是否List中的任何一个元素")
+    public void listAnyMatch() {
+        String str ="谁说王五不会打篮球？";
+        List<String> searchList = Arrays.asList("张三","李四","王五");//要搜索的字符串
+        if (searchList.stream().anyMatch(str::contains)) {
+            System.out.println("str至少含有 searchList 的一个元素");
+        } else {
+            System.out.println("str 不含有 searchList 的任何元素");
+        }
+    }
 }

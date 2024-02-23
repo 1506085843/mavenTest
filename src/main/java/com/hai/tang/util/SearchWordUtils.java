@@ -2,6 +2,8 @@ package com.hai.tang.util;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -104,13 +106,40 @@ public class SearchWordUtils {
     }
 
     /**
-     * @param dirPath   要搜索的文件夹路径
+     * 扫描dirPath下的所有文件类型是fileType的文件内容，查找含有 searchStr 的行数据
+     *
+     * @param dirPath   要搜索的文件夹路径（会搜索其子文件夹）
      * @param searchStr 要搜索的关键字
      * @param fileType  要搜索的文件后缀
      * @return <文件名, <行数, 该行内容>>
      */
     public static Map<String, Map<Integer, String>> searchFiles(String dirPath, String searchStr, List<String> fileType) {
         return searchFiles(dirPath, searchStr, fileType, null);
+    }
+
+
+    /**
+     * 扫描dirPath下的所有文件类型是fileType的文件内容，如果文件内容含有 searchStrList 中的任一元素则会返回该文件路径
+     *
+     * @param dirPath   要搜索的文件夹路径（会搜索其子文件夹）
+     * @param searchStrList 要搜索的关键字
+     * @param fileType  要搜索的文件后缀
+     * @return <文件名>
+     */
+    public static List<String> containSearchStrFiles(String dirPath, List<String> searchStrList, List<String> fileType) {
+        List<String> allFiles =  getAllFilesPath(dirPath, fileType);
+        List<String> containFilePath = new ArrayList<>();
+        for (String f : allFiles) {
+            //System.out.println("正在文件中搜索，当前搜索文件：" + f);
+            String fileContent = getFileContent(f);
+            for (String searchStr : searchStrList) {
+                if (fileContent.contains(searchStr)){
+                    containFilePath.add(f);
+                    break;
+                }
+            }
+        }
+        return containFilePath;
     }
 
     /**
@@ -124,7 +153,7 @@ public class SearchWordUtils {
         List<String> allFiles = excludeDir == null || excludeDir.size() == 0 ? getAllFilesPath(dirPath, fileType) : getAllFilesPath(dirPath, fileType, excludeDir);
         Map<String, Map<Integer, String>> searchInfo = new LinkedHashMap<>();
         for (String f : allFiles) {
-            System.out.println("正在文件中搜索，当前搜索文件：" + f);
+            //System.out.println("正在文件中搜索，当前搜索文件：" + f);
             Map<Integer, String> map = scanFile(f, searchStr);
             if (map.size() != 0) {
                 searchInfo.put(f, map);
@@ -157,7 +186,7 @@ public class SearchWordUtils {
         List<String> allFiles = excludeDir == null || excludeDir.size() == 0 ? getAllReadFilessPath(dirPath, new ArrayList<>(), null) : getAllReadFilessPath(dirPath, new ArrayList<>(), excludeDir);
         Map<String, Map<Integer, String>> searchInfo = new LinkedHashMap<>();
         for (String f : allFiles) {
-            System.out.println("正在文件中搜索，当前搜索文件：" + f);
+            //System.out.println("正在文件中搜索，当前搜索文件：" + f);
             Map<Integer, String> map = scanFile(f, searchStr);
             if (map.size() != 0) {
                 searchInfo.put(f, map);
@@ -187,7 +216,7 @@ public class SearchWordUtils {
     public static List<String> getAllReadFilessPath(String dirPath, List<String> list, List<String> excludeDir) {
         File file = new File(dirPath);
         File[] tempList = file.listFiles();
-        System.out.println("正在扫描文件夹：" + dirPath);
+        //System.out.println("正在扫描文件夹：" + dirPath);
         if (null != tempList) {
             for (int i = 0; i < tempList.length; i++) {
                 String filePath = tempList[i].toString();
@@ -217,7 +246,7 @@ public class SearchWordUtils {
     public static List<String> getAll_FilesPath(String dirPath, List<String> list, List<String> excludeDir) {
         File file = new File(dirPath);
         File[] tempList = file.listFiles();
-        System.out.println("正在扫描文件夹：" + dirPath);
+        //System.out.println("正在扫描文件夹：" + dirPath);
         if (null != tempList) {
             for (int i = 0; i < tempList.length; i++) {
                 String filePath = tempList[i].toString();
@@ -254,7 +283,7 @@ public class SearchWordUtils {
     public static List<String> getAllFiles(String dirPath, List<String> fileType, List<String> list, List<String> excludeDir) {
         File file = new File(dirPath);
         File[] tempList = file.listFiles();
-        System.out.println("正在扫描文件夹：" + dirPath);
+        //System.out.println("正在扫描文件夹：" + dirPath);
         if (null != tempList) {
             for (int i = 0; i < tempList.length; i++) {
                 String filePath = tempList[i].toString();
@@ -324,6 +353,17 @@ public class SearchWordUtils {
             }
         }
         return list;
+    }
+
+    //获取文本文件内容为一个字符串
+    private static String getFileContent(String filePath) {
+        String content = null;
+        try {
+            content = new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return content;
     }
 }
 

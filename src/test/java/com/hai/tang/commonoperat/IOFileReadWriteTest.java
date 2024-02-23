@@ -14,8 +14,10 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -218,6 +220,23 @@ public class IOFileReadWriteTest {
         FileOutputStream out = new FileOutputStream("F:/ccc.mp3");
         out.write(data);
         out.close();*/
+    }
+
+    @Test
+    @DisplayName("java8优雅地将字符串写入文件")
+    public void strWriteToFile() throws IOException {
+        File file = new File("F:/ccc.txt");
+        String content = "流萤飞舞的童年“漆漆一片间，亮亮一点光。独舞池塘边，伴我入梦乡。”小时候，我和伙伴们经常念这样的儿歌。我们也都知道儿歌唱的是萤火虫。在空旷的山野里、小院的梧桐...\n" +
+                "夜每晚的夜空，都是那么空寂。只有几颗星星在闪烁，月亮也不知去了何处。我好想像星星安那样，无忧无虑，闪烁着星光…………月月，的光好清澈。没有受过一丝污染，月的光...\n" +
+                "《优美抒情散文精选》张三\n" +
+                "致我们终将逝去的青春在这个喧闹的城市，我们背负了太多的包袱，走过了很多路，吃过了很多苦。寂静夜空，对天仰望，尘世间寻找心灵的安慰，我希望这些文字感动了你。——...\n" +
+                "《经典散文经典文章大全1》\n" +
+                "流萤飞舞的童年“漆漆一片间，亮亮一点光。独舞池塘边，伴我入梦乡。”小时候，我和伙伴们经常念这样的儿歌。我们也都知道儿歌唱的是萤火虫。在空旷的山野里、小院的梧桐...";
+
+            Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
+            writer.write(content);
+            writer.flush();
+            writer.close();
     }
 
     @Test
