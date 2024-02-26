@@ -478,7 +478,7 @@ public class StreamTest {
     }
 
     @Test
-    @DisplayName("判断字符串是否List中的任何一个元素")
+    @DisplayName("判断字符串是否至少含有List中的任何一个元素")
     public void listAnyMatch() {
         String str ="谁说王五不会打篮球？";
         List<String> searchList = Arrays.asList("张三","李四","王五");//要搜索的字符串
