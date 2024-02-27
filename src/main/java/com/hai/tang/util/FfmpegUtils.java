@@ -393,6 +393,22 @@ public class FfmpegUtils {
     }
 
     /**
+     * mkv视频格式转换为mp4
+     *
+     * @param videoResourcesPath mkv视频文件的路径
+     */
+    public static void videoMkvToMp4(String videoResourcesPath) {
+        String fileName = videoResourcesPath.substring(videoResourcesPath.lastIndexOf("\\") + 1, videoResourcesPath.lastIndexOf("."));
+        List<String> command = new ArrayList<>();
+        command.add(ffmpeg);
+        command.add("-i");
+        command.add(videoResourcesPath);
+        command.add("-c:v hevc_nvenc -c:a aac -b:a 128k");
+        command.add(saveMediaPath + fileName + ".mp4");
+        commandStart(command);
+    }
+
+    /**
      * 获取音频或视频信息
      *
      * @param videoAudioResourcesPath 音频或视频文件的路径

@@ -26,6 +26,8 @@ public class FfmpegUtilsTest {
         FfmpegUtils.mergeSilent_VideoAudio("D:\\507-#网愈云故事收藏馆.mp4","D:\\mp3\\16-这几句真假声转换太好听了.mp3");
         //格式转换
         FfmpegUtils.videoFormatConversion("D:\\507-#网愈云故事收藏馆.mp4","flv");
+        //mkv格式转换为mp4
+        FfmpegUtils.videoMkvToMp4("D:\\508-#网愈云故事收藏馆.mkv");
         //多视频拼接合并为一个mp4格式视频
         List<String> video = new ArrayList<>();
         video.add("D:\\16-这几句真假声转换太好听了.mp4");
