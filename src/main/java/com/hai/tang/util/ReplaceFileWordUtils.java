@@ -17,8 +17,10 @@ import java.util.regex.Pattern;
 
 /**
  * 用于查找并替换文本文件中字符串的工具类
+ *
+ * 如果你对一个文件中的内容有多种不同的替换或要对字符串进行替换可使用 ReplaceStrWordUtils 工具类
  */
-public class ReplaceWordUtils {
+public class ReplaceFileWordUtils {
 
     /**
      * 在文本文件 filePath 中搜索第一次出现的 searchWord，并将其替换为 replaceWord
@@ -128,8 +130,11 @@ public class ReplaceWordUtils {
         writeFileContent(filePath,content);
     }
 
-    //获取文本文件内容为一个字符串
-    private static String getFileContent(String filePath) {
+
+    /**
+     * 获取文本文件 filePath 的内容为一个字符串返回
+     */
+    public static String getFileContent(String filePath) {
         String content = null;
         try {
             content = new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
@@ -139,8 +144,12 @@ public class ReplaceWordUtils {
         return content;
     }
 
-    //将字符串写入文本文件
-    private static void writeFileContent(String filePath,String content) {
+
+    /**
+     * 将字符串 content 写入文本文件 filePath
+     * （如果文件里已有内容，写入会覆盖原来的内容）
+     */
+    public static void writeFileContent(String filePath,String content) {
         File file = new File(filePath);
         try {
             Writer  writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), 	StandardCharsets.UTF_8));

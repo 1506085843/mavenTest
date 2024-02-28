@@ -7,20 +7,35 @@ import java.util.HashMap;
 import java.util.Map;
 
 @DisplayName("查找并替换文本文件中字符串的测试类")
-public class ReplaceWordUtilsTest {
+public class ReplaceFileWordUtilsTest {
+
+    @Test
+    @DisplayName("获取文件内容为一个字符串")
+    public void getFileContent() {
+        String filePath = "D:\\text1.txt";
+        String fileContent = ReplaceFileWordUtils.getFileContent(filePath);
+    }
+
+    @Test
+    @DisplayName("将字符串写入文件")
+    public void writeFileContent() {
+        String filePath = "D:\\text1.txt";
+        String fileContent = "你好";
+        ReplaceFileWordUtils.writeFileContent(filePath,fileContent);
+    }
 
     @Test
     @DisplayName("在文本文件 filePath 中搜索第一次出现的 searchWord，并将其替换为 replaceWord")
     public void replaceWordFirst() {
         String filePath = "D:\\text1.txt";
-        ReplaceWordUtils.replaceWordFirst(filePath,"经典散文经典文章大全1","李四哈哈");
+        ReplaceFileWordUtils.replaceWordFirst(filePath,"经典散文经典文章大全1","李四哈哈");
     }
 
     @Test
     @DisplayName("在文本文件 filePath 中搜索所有的 searchWord，并将其替换为 replaceWord")
     public void replaceWordAll() {
         String filePath = "D:\\text1.txt";
-        ReplaceWordUtils.replaceWordAll(filePath,"经典散文经典文章大全1","李四哈哈");
+        ReplaceFileWordUtils.replaceWordAll(filePath,"经典散文经典文章大全1","李四哈哈");
     }
 
 
@@ -31,7 +46,7 @@ public class ReplaceWordUtilsTest {
         Map<String,String> searchReplaceMap = new HashMap<>();
         searchReplaceMap.put("《经典","aa");
         searchReplaceMap.put("《优美","bb");
-        ReplaceWordUtils.replaceMultWordAll(filePath,searchReplaceMap);
+        ReplaceFileWordUtils.replaceMultWordAll(filePath,searchReplaceMap);
     }
 
     @Test
@@ -39,7 +54,7 @@ public class ReplaceWordUtilsTest {
     public void replaceStartEnd() {
         String filePath = "D:\\text1.txt";
         //将文本中的《经典xxxxx1》 替换为 a李四哈哈
-        ReplaceWordUtils.replaceStartEnd(filePath,"《经典","1》","a李四哈哈");
+        ReplaceFileWordUtils.replaceStartEnd(filePath,"《经典","1》","a李四哈哈");
     }
 
     @Test
@@ -50,7 +65,7 @@ public class ReplaceWordUtilsTest {
         startEndWordsMap.put("《经典","1》");
         startEndWordsMap.put("《优美","精选》");
         //将文本中的《经典xxx1》、《优美xxx精选》 替换为 a李四哈哈
-        ReplaceWordUtils.replaceStartEnds(filePath,startEndWordsMap,"a李四哈哈");
+        ReplaceFileWordUtils.replaceStartEnds(filePath,startEndWordsMap,"a李四哈哈");
     }
 
     @Test
@@ -58,7 +73,7 @@ public class ReplaceWordUtilsTest {
     public void replaceBetween() {
         String filePath = "D:\\text1.txt";
         //将文本中的《经典xxx1》替换为 《经典a李四哈哈1》
-        ReplaceWordUtils.replaceBetween(filePath,"《经典","1》","a李四哈哈");
+        ReplaceFileWordUtils.replaceBetween(filePath,"《经典","1》","a李四哈哈");
     }
 
     @Test
@@ -69,6 +84,6 @@ public class ReplaceWordUtilsTest {
         map.put("《经典","1》");
         map.put("《优美","精选》");
         //将文本中的《经典xxx1》、《优美xxx精选》 分别替换为 《经典a李四哈哈1》、《优美a李四哈哈精选》
-        ReplaceWordUtils.replaceBetweens(filePath,map,"a李四哈哈");
+        ReplaceFileWordUtils.replaceBetweens(filePath,map,"a李四哈哈");
     }
 }
