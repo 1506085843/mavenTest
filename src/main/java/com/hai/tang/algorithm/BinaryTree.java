@@ -148,6 +148,36 @@ public class BinaryTree<T> {
     }
 
     /**
+     * 层序遍历(每一层的节点都存放在一个List里)
+     */
+    public List<List<T>> levelsTraverseTwo() {
+        return levelsTraverse(root);
+    }
+
+    private List<List<T>> levelsTraverse(Node root) {
+        List<List<T>> result = new ArrayList<>();//用来输出结果
+        Queue<Node> queue = new LinkedList<>();//创建一个队列，用来逐层存放
+
+        if (root == null) return result;
+
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            List<T> list = new ArrayList<>();//用于存放值
+            int len = queue.size();
+            for (int i = 0; i < len; i++) {
+                Node temp = queue.poll();
+                if (temp != null) {
+                    list.add(temp.value);//放进list
+                    if (temp.leftNode != null) queue.offer(temp.leftNode);
+                    if (temp.rightNode != null) queue.offer(temp.rightNode);
+                }
+            }
+            result.add(list);
+        }
+        return result;
+    }
+
+    /**
      * 清空二叉树
      */
     public void clear() {
