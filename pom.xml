@@ -133,6 +133,14 @@
             <version>2.22.1</version>
         </dependency>
 
+        <!-- 用于excel文件转html或pdf-->
+        <!-- 运行init_local_repository.bat 把lib下的jar包安装到本地仓库，刷新项目maven-->
+        <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>cells</artifactId>
+            <version>8.5.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>

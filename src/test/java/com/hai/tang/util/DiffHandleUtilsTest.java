@@ -13,10 +13,10 @@ public class DiffHandleUtilsTest {
     @Test
     public void diffGenerateHtml() {
         //要对比的两文件路径
-        String file1Path = "F:\\diff\\c1.txt";
-        String file2Path = "F:\\diff\\c2.txt";
+        String file1Path = "C:\\diff\\c1.txt";
+        String file2Path = "C:\\diff\\c2.txt";
         //生成的html文件夹路径
-        String resultDirPath = "F:\\diff\\";
+        String resultDirPath = "C:\\diff\\";
 
         //对比两文件，获得不同点
         List<String> diffString = DiffHandleUtils.diffString(file1Path, file2Path);
