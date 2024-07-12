@@ -141,6 +141,7 @@
             <version>8.5.2</version>
         </dependency>
         <!-- 用于pdf文件转分割、提取文字、转word-->
+        <!--参考：https://www.jianshu.com/p/5a90d17852ce 和 https://juejin.cn/post/7034398528067764231-->
         <!-- 运行init_local_repository.bat 把lib下的jar包安装到本地仓库，刷新项目maven-->
         <dependency>
             <groupId>com.aspose</groupId>

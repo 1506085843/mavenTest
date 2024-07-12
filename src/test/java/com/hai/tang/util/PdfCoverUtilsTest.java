@@ -38,14 +38,14 @@ public class PdfCoverUtilsTest {
     @DisplayName("获取pdf的指定范围的页面为一个新的pdf")
     public void getNewPdfRange() {
         String pdf = "C:\\Users\\haitang\\Downloads\\effective-java-2.pdf";
-        //获取第2到第3页为一个新的pdf
-        PdfCoverUtils.getNewPdfRange(pdf,2,3,"C:\\myCode\\mavenTest\\newPdf.pdf");
+        //获取第2到第5页为一个新的pdf
+        PdfCoverUtils.getNewPdfRange(pdf,2,5,"C:\\myCode\\mavenTest\\newPdf.pdf");
     }
 
     @Test
     @DisplayName("pdf 转换为word 文档")
     public void convertPDFtoWord() {
         String pdf = "C:\\Users\\haitang\\Downloads\\effective-java-2.pdf";
-        PdfCoverUtils.convertPDFtoWord(pdf,"C:\\myCode\\mavenTest\\word.doc");
+        PdfCoverUtils.convertPDFtoWord(pdf,"C:\\myCode\\mavenTest\\word.docx");
     }
 }
