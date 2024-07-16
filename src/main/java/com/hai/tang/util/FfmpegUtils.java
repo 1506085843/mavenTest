@@ -258,13 +258,11 @@ public class FfmpegUtils {
         command.add("-i");
         command.add(audioResourcesPath);
         command.add("-filter_complex");
-        command.add("amix");
+        command.add("\"[0:a][1:a]amix=inputs=2[a]\"");
         command.add("-map");
         command.add("0:v");
         command.add("-map");
-        command.add("0:a");
-        command.add("-map");
-        command.add("1:a");
+        command.add("\"[a]\"");
         //-shortest会取视频或音频两者短的一个为准，多余部分则去除不合并
         //command.add("-shortest");
         command.add(saveMediaPath + videoResourcesPath.substring(videoResourcesPath.lastIndexOf("\\") + 1));
