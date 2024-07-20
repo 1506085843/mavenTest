@@ -259,7 +259,7 @@ public class FfmpegUtils {
         command.add(audioResourcesPath);
         command.add("-filter_complex");
         command.add("\"[0:a][1:a]amix=inputs=2[a]\"");
-        //如果合并后的音频声音太大，可以注释上一行代码然后开启下一行代码，将会把音频音量以50%进行合并也就是0.5，如果声音还是很大，可自行调小数值
+        //如果合并后原音频声音太大超过了原视频的声音，可以注释上一行代码然后开启下一行代码，将会把音频音量以50%进行合并也就是0.5，如果声音还是很大，可自行调小数值
         //command.add("\"[1:a]volume=0.5[music];[0:a][music]amix=inputs=2[a]\"");
         command.add("-map");
         command.add("0:v");
