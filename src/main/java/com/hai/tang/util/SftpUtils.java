@@ -14,7 +14,6 @@ import java.util.Properties;
 public class SftpUtils {
     private static JSch jsch;
     private static Session session = null;
-    private static Channel channel = null;
     private static ChannelSftp channelSftp = null;
 
     //服务器用户名
@@ -58,10 +57,9 @@ public class SftpUtils {
             // 通过Session建立连接
             session.connect();
             // 打开SFTP通道
-            channel = session.openChannel("sftp");
+            channelSftp = (ChannelSftp) session.openChannel("sftp");
             // 建立SFTP通道的连接
-            channel.connect();
-            channelSftp = (ChannelSftp) channel;
+            channelSftp.connect();
         } catch (JSchException e) {
             e.printStackTrace();
         }
@@ -72,11 +70,20 @@ public class SftpUtils {
      * 关闭连接
      */
     public void close() {
-        if (channel != null) {
-            channel.disconnect();
+        if (channelSftp != null) {
+            try {
+                channelSftp.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
         if (session != null) {
-            session.disconnect();
+            try {
+                session.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -191,9 +198,7 @@ public class SftpUtils {
             channelExec.connect();
             InputStream in = channelExec.getInputStream();
             result = IOUtils.toString(in, Charset.defaultCharset());
-        } catch (JSchException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (JSchException | IOException e) {
             e.printStackTrace();
         }
         return result;
