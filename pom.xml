@@ -137,7 +137,7 @@
         <!-- 运行init_local_repository.bat 把lib下的jar包安装到本地仓库，刷新项目maven-->
         <dependency>
             <groupId>com.aspose</groupId>
-            <artifactId>cells</artifactId>
+            <artifactId>aspose-cells</artifactId>
             <version>8.5.2</version>
         </dependency>
         <!-- 用于pdf文件转分割、提取文字、转word-->
