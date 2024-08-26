@@ -17,25 +17,25 @@ public class SftpUtils {
     private static ChannelSftp channelSftp = null;
 
     //服务器用户名
-    private String ftpUserName;
+    private String user;
 
     //服务器密码
-    private String ftpPassword;
+    private String password;
 
     //服务器ip
-    private String ftpHost;
+    private String host;
 
     //服务器端口
-    private String ftpPort;
+    private int port;
 
     public SftpUtils() {
     }
 
-    public SftpUtils(String ftpUserName, String ftpPassword, String ftpHost, String ftpPort) {
-        this.ftpUserName = ftpUserName;
-        this.ftpPassword = ftpPassword;
-        this.ftpHost = ftpHost;
-        this.ftpPort = ftpPort;
+    public SftpUtils(String host, int port, String user, String password) {
+        this.user = user;
+        this.password = password;
+        this.host = host;
+        this.port = port;
     }
 
     /**
@@ -45,9 +45,9 @@ public class SftpUtils {
         jsch = new JSch();
         try {
             // 根据用户名、主机ip、端口号获取一个Session对象
-            session = jsch.getSession(ftpUserName, ftpHost, Integer.valueOf(ftpPort));
+            session = jsch.getSession(user, host, port);
             // 设置密码
-            session.setPassword(ftpPassword);
+            session.setPassword(password);
             Properties config = new Properties();
             config.put("StrictHostKeyChecking", "no");
             // 为Session对象设置properties
@@ -96,11 +96,11 @@ public class SftpUtils {
         directory = null != directory && directory.endsWith("/") ? directory : directory + "/";
         boolean dirExist = false;
         try {
-            SftpATTRS sftpATTRS = channelSftp.lstat(directory);
-            dirExist = sftpATTRS.isDir();
+            SftpATTRS sftpAttrs = channelSftp.lstat(directory);
+            dirExist = sftpAttrs.isDir();
         } catch (Exception e) {
-            if (e.getMessage().equalsIgnoreCase("no such file")) {
-                dirExist = false;
+            if ("no such file".equalsIgnoreCase(e.getMessage())) {
+                return false;
             }
         }
         return dirExist;
@@ -110,15 +110,14 @@ public class SftpUtils {
      * 创建一个文件夹(若整个路径都不存在会依次创建，若该路径已经存在则不会创建)
      *
      * @param createpath 要创建的文件夹路径，如：/root/test/saveFile/
-     * @throws SftpException
      */
     public void createDir(String createpath) {
         createpath = null != createpath && createpath.endsWith("/") ? createpath : createpath + "/";
         if (!isDirExist(createpath)) {
             StringBuilder builder = new StringBuilder("/");
-            String pathArry[] = createpath.split("/");
+            String[] pathArry = createpath.split("/");
             for (String dir : pathArry) {
-                if (!dir.equals("")) {
+                if (!"".equals(dir)) {
                     builder.append(dir);
                     builder.append("/");
                     try {

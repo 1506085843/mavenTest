@@ -17,7 +17,7 @@ public class SftpUtilsTest {
     @Test
     public void dirIsExist() {
         //开启连接
-        SftpUtils sftpUtil = new SftpUtils("root", "46sdffhg", "127.0.0.1", "22");
+        SftpUtils sftpUtil = new SftpUtils("127.0.0.1", 22, "root", "46sdffhg");
         sftpUtil.connect();
         //判断目录是否存在
         boolean dirBoolean = sftpUtil.isDirExist("/usr/local/aaa/");
@@ -29,7 +29,7 @@ public class SftpUtilsTest {
     @Test
     public void createDir() {
         //开启连接
-        SftpUtils sftpUtil = new SftpUtils("root", "46sdffhg", "127.0.0.1", "22");
+        SftpUtils sftpUtil = new SftpUtils("127.0.0.1", 22, "root", "46sdffhg");
         sftpUtil.connect();
         //创建一个文件夹
         sftpUtil.createDir("/usr/local/aaa/bbb/");
@@ -41,7 +41,7 @@ public class SftpUtilsTest {
     @Test
     public void deleteFile() {
         //开启连接
-        SftpUtils sftpUtil = new SftpUtils("root", "46sdffhg", "127.0.0.1", "22");
+        SftpUtils sftpUtil = new SftpUtils("127.0.0.1", 22, "root", "46sdffhg");
         sftpUtil.connect();
         //删除指定文件
         sftpUtil.deleteFile("/usr/local/aaa/install.txt");
@@ -53,7 +53,7 @@ public class SftpUtilsTest {
     @Test
     public void uploadFile() {
         //开启连接
-        SftpUtils sftpUtil = new SftpUtils("root", "46sdffhg", "127.0.0.1", "22");
+        SftpUtils sftpUtil = new SftpUtils("127.0.0.1", 22, "root", "46sdffhg");
         sftpUtil.connect();
         //把本地的文件上传到服务器上
         FileInputStream in = null;
@@ -72,7 +72,7 @@ public class SftpUtilsTest {
     @Test
     public void downloadFile() {
         //开启连接
-        SftpUtils sftpUtil = new SftpUtils("root", "46sdffhg", "127.0.0.1", "22");
+        SftpUtils sftpUtil = new SftpUtils("127.0.0.1", 22, "root", "46sdffhg");
         sftpUtil.connect();
         //从服务器下载文件
         InputStream download = sftpUtil.downloadFile("/usr/local/aaa/", "myvideo.mp4");
@@ -92,7 +92,7 @@ public class SftpUtilsTest {
     @Test
     public void excutingOrder() {
         //开启连接
-        SftpUtils sftpUtil = new SftpUtils("root", "46sdffhg", "127.0.0.1", "22");
+        SftpUtils sftpUtil = new SftpUtils("127.0.0.1", 22, "root", "46sdffhg");
         sftpUtil.connect();
         //打印/usr/local/aaa/目录下的所有文件信息
         String result = sftpUtil.excutOrder("ls -a -l /usr/local/aaa/");

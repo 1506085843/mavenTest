@@ -149,6 +149,19 @@
             <version>21.11</version>
         </dependency>
 
+        <!-- 用于ftp工具类-->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.11.1</version>
+        </dependency>
+        <!-- 用于单元测试里测试ftp-->
+        <dependency>
+            <groupId>org.mockftpserver</groupId>
+            <artifactId>MockFtpServer</artifactId>
+            <version>3.2.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
